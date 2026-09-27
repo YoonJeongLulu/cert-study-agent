@@ -1,8 +1,8 @@
-# CertPulse
+# Cert Study Agent
 
 > 공부하러 찾아가지 않아도, 시험 문제와 오답 복습이 텔레그램으로 먼저 찾아오는 개인 자격증 학습 에이전트.
 
-CertPulse는 정해진 시간마다 핵심 개념과 시험형 문제를 보내고, 답안 선택·즉시 해설·오답 재출제까지 텔레그램 안에서 끝내는 오픈소스 학습 봇입니다. AWS SAA를 기본 프로필로 제공하며 CKA, AZ-104 등 다른 시험의 공식 가이드를 기반으로 학습 프로필을 추가할 수 있습니다.
+Cert Study Agent는 정해진 시간마다 핵심 개념과 시험형 문제를 생성하고, 사용자의 답변과 학습 기록에 맞춰 다음 문제와 오답 복습을 조정하는 오픈소스 Telegram 학습 에이전트입니다. AWS SAA를 기본 프로필로 제공하며 CKA, AZ-104 등 다른 시험의 공식 가이드를 기반으로 학습 프로필을 추가할 수 있습니다.
 
 실제 시험 문제나 덤프를 수집하지 않습니다. OpenAI Responses API가 시험 범위와 학습 기록을 바탕으로 매 회차 새로운 문제를 생성합니다.
 
@@ -24,7 +24,7 @@ CertPulse는 정해진 시간마다 핵심 개념과 시험형 문제를 보내�
 Telegram
    │ 버튼·명령·정답
    ▼
-CertPulse runner ─── SQLite 학습 기록
+Cert Study Agent ─── SQLite 학습 기록
    │
    └── OpenAI Responses API
          ├── 개념·영문 문제·한국어 번역·해설 생성
@@ -48,7 +48,7 @@ docker compose version
 
 ```bash
 git clone <YOUR_REPOSITORY_URL>
-cd cert-study-coach
+cd cert-study-agent
 cp .env.example .env
 ```
 
@@ -86,7 +86,7 @@ docker compose restart
 docker compose down
 ```
 
-생성되는 로컬 이미지 이름은 `certpulse:latest`입니다. 학습 기록은 Docker named volume `coach-data`에 보존되므로 컨테이너를 다시 만들거나 `docker compose down`을 실행해도 유지됩니다. 볼륨까지 명시적으로 삭제하면 기록도 삭제되므로 `docker compose down -v`는 주의해서 사용하세요.
+생성되는 로컬 이미지 이름은 `cert-study-agent:latest`입니다. 학습 기록은 Docker named volume `coach-data`에 보존되므로 컨테이너를 다시 만들거나 `docker compose down`을 실행해도 유지됩니다. 볼륨까지 명시적으로 삭제하면 기록도 삭제되므로 `docker compose down -v`는 주의해서 사용하세요.
 
 ### 학습 기록과 로그 관리
 
@@ -98,8 +98,8 @@ DB를 현재 폴더의 `backups` 디렉터리에 백업하려면:
 
 ```bash
 mkdir -p backups
-docker compose exec -T cert-study-coach python -c "import sqlite3; src=sqlite3.connect('/data/study.sqlite3'); dst=sqlite3.connect('/data/study-backup.sqlite3'); src.backup(dst); dst.close(); src.close()"
-docker compose cp cert-study-coach:/data/study-backup.sqlite3 ./backups/study.sqlite3
+docker compose exec -T cert-study-agent python -c "import sqlite3; src=sqlite3.connect('/data/study.sqlite3'); dst=sqlite3.connect('/data/study-backup.sqlite3'); src.backup(dst); dst.close(); src.close()"
+docker compose cp cert-study-agent:/data/study-backup.sqlite3 ./backups/study.sqlite3
 ```
 
 `backups/`에는 개인 학습 이력과 생성된 문제 내용이 포함될 수 있으므로 Git에 커밋하지 않습니다.
@@ -113,6 +113,8 @@ Docker 없이 Mac 로그인 세션에서 계속 실행하려면:
 ```bash
 ./setup.command
 ```
+
+기존 설치와 충돌하지 않도록 macOS 내부 저장 경로와 LaunchAgent 식별자에는 이전 이름인 `cert-study-coach`를 유지합니다. 공개 프로젝트와 Telegram 표시 이름은 `Cert Study Agent`입니다.
 
 설정 도구가 Bot Token과 OpenAI API 키를 숨김 입력으로 받고, 개인 Chat ID를 찾은 후 다음 항목을 구성합니다.
 
@@ -185,7 +187,7 @@ OpenAI 공식 문서도 API 키를 소스나 공개 저장소에 넣지 말고 �
 git init
 git add .
 git status
-git commit -m "Initial release: CertPulse Telegram study agent"
+git commit -m "Initial release: Cert Study Agent"
 git branch -M main
 git remote add origin <YOUR_REPOSITORY_URL>
 git push -u origin main

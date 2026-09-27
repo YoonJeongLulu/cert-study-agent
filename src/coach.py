@@ -412,7 +412,7 @@ class Coach:
 
     def _help(self) -> str:
         return (
-            "🎓 <b>자격증 시간별 코치</b>\n\n"
+            "🎓 <b>자격증 학습 에이전트</b>\n\n"
             "선택한 시험의 핵심 개념과 영어 문제를 보내고, 답을 누르면 즉시 해설합니다.\n\n"
             "/status — 학습 현황\n"
             "/exam — 현재 시험 확인\n"

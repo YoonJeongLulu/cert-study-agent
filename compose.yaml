@@ -1,6 +1,6 @@
 services:
-  cert-study-coach:
-    image: certpulse:latest
+  cert-study-agent:
+    image: cert-study-agent:latest
     build: .
     restart: unless-stopped
     env_file:

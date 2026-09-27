@@ -130,7 +130,7 @@ def main() -> int:
     restart_launch_agent()
     api.send_message(
         chat_id,
-        "✅ 자격증 시간별 코치 설정이 끝났어요.\n"
+        "✅ 자격증 학습 에이전트 설정이 끝났어요.\n"
         "기본 시험: AWS SAA-C03\n"
         "알림: 매일 09:00~22:00\n"
         "시험 일시: 2026-10-05 09:00\n\n"

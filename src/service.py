@@ -39,7 +39,7 @@ def configure_logging(config_path: Optional[str], database_path: str) -> None:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Local Telegram certification study coach")
+    parser = argparse.ArgumentParser(description="Telegram certification study agent")
     parser.add_argument(
         "--config",
         help="Optional JSON config path. Environment variables take precedence.",
@@ -68,7 +68,7 @@ def main() -> int:
     retry_after = 0.0
     offset = None
     failures = 0
-    LOG.info("Certification study coach started")
+    LOG.info("Certification study agent started")
     try:
         while running:
             if generation is not None and generation.done():
@@ -106,7 +106,7 @@ def main() -> int:
                 time.sleep(min(60, 2 ** min(failures, 5)))
     finally:
         executor.shutdown(wait=False, cancel_futures=True)
-        LOG.info("Certification study coach stopped")
+        LOG.info("Certification study agent stopped")
     return 0
 
 
