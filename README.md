@@ -88,6 +88,22 @@ docker compose down
 
 생성되는 로컬 이미지 이름은 `certpulse:latest`입니다. 학습 기록은 Docker named volume `coach-data`에 보존되므로 컨테이너를 다시 만들거나 `docker compose down`을 실행해도 유지됩니다. 볼륨까지 명시적으로 삭제하면 기록도 삭제되므로 `docker compose down -v`는 주의해서 사용하세요.
 
+### 학습 기록과 로그 관리
+
+- 학습 기록: Docker volume의 `/data/study.sqlite3`
+- 회전 로그: 같은 volume의 `/data/logs/service.log`와 백업 파일 최대 3개
+- Docker 로그: `docker compose logs`, 파일당 10MB 및 최대 3개로 제한
+
+DB를 현재 폴더의 `backups` 디렉터리에 백업하려면:
+
+```bash
+mkdir -p backups
+docker compose exec -T cert-study-coach python -c "import sqlite3; src=sqlite3.connect('/data/study.sqlite3'); dst=sqlite3.connect('/data/study-backup.sqlite3'); src.backup(dst); dst.close(); src.close()"
+docker compose cp cert-study-coach:/data/study-backup.sqlite3 ./backups/study.sqlite3
+```
+
+`backups/`에는 개인 학습 이력과 생성된 문제 내용이 포함될 수 있으므로 Git에 커밋하지 않습니다.
+
 Docker Desktop이 실행 중이면 컨테이너가 비정상 종료되거나 Mac을 재시작한 뒤에도 자동으로 다시 시작됩니다. 다만 Mac이 꺼지거나 잠들면 알림도 멈추므로 24시간 운영하려면 같은 이미지를 상시 켜진 서버에 배포해야 합니다.
 
 ## macOS 로컬 설치

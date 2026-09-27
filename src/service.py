@@ -19,8 +19,16 @@ from telegram_api import TelegramAPI
 LOG = logging.getLogger(__name__)
 
 
-def configure_logging(config_path: str) -> None:
-    log_dir = Path(config_path).expanduser().parent / "logs"
+def log_directory(config_path: Optional[str], database_path: str) -> Path:
+    if config_path:
+        storage_dir = Path(config_path).expanduser().parent
+    else:
+        storage_dir = Path(database_path).expanduser().parent
+    return storage_dir / "logs"
+
+
+def configure_logging(config_path: Optional[str], database_path: str) -> None:
+    log_dir = log_directory(config_path, database_path)
     log_dir.mkdir(parents=True, exist_ok=True)
     handler = RotatingFileHandler(log_dir / "service.log", maxBytes=2_000_000, backupCount=3)
     handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(name)s %(message)s"))
@@ -37,8 +45,8 @@ def main() -> int:
         help="Optional JSON config path. Environment variables take precedence.",
     )
     args = parser.parse_args()
-    configure_logging(args.config)
     config = Config.load(args.config)
+    configure_logging(args.config, config.database_path)
     store = LocalStore(config.database_path)
     store.cleanup()
     api = TelegramAPI(config.telegram_token, timeout=20)

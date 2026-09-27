@@ -12,6 +12,7 @@ samconfig.toml
 config.json
 logs/
 data/
+backups/
 .DS_Store
 .coverage
 htmlcov/
