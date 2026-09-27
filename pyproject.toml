@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cert-study-coach"
+version = "0.1.0"
+description = "Hourly multi-exam Telegram study coach for macOS"
+requires-python = ">=3.9"
+
+[project.optional-dependencies]
+test = ["pytest>=7,<10"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

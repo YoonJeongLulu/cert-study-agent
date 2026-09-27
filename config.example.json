@@ -1,0 +1,16 @@
+{
+  "telegram_token": "set-by-setup",
+  "telegram_chat_id": 0,
+  "openai_api_key": "set-by-setup",
+  "openai_model": "gpt-6-luna",
+  "openai_reasoning_effort": "none",
+  "openai_max_output_tokens": 1600,
+  "lesson_web_search": false,
+  "allow_fallback_questions": false,
+  "timezone": "Asia/Seoul",
+  "schedule_start_hour": 9,
+  "schedule_end_hour": 22,
+  "exam_at": "2026-10-05T09:00:00+09:00",
+  "database_path": "~/Library/Application Support/cert-study-coach/study.sqlite3",
+  "max_questions_per_lesson": 2
+}

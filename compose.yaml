@@ -1,0 +1,12 @@
+services:
+  cert-study-coach:
+    image: certpulse:latest
+    build: .
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - coach-data:/data
+
+volumes:
+  coach-data:
